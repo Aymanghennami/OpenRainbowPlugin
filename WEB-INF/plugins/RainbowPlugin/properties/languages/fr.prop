@@ -1,0 +1,12 @@
+data.$id.shortcut.jcmsplugin.openRainbow.title: Rainbow
+data.$id.shortcut.jcmsplugin.openRainbow.text: Messagerie OpenRainbow
+
+jcmsplugin.Rainbow.app.catalog.title: Rainbow
+
+
+extra.Member.jcmsplugin.rainbow.tokenRainbow: Rainbow token
+
+
+jcmsplugin.rainbowPlugin.APPLICATIONID: Identify ID
+jcmsplugin.rainbowPlugin.APPLICATIONSECRET: Secret App ID
+jcmsplugin.rainbowPlugin.OAuthRedirect: Redirect Uri
