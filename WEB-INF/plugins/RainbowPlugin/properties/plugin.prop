@@ -18,20 +18,19 @@
 #channel.less.plugins/${pluginName}Plugin/css/plugin.css:    plugins/${pluginName}Plugin/css/plugin.less
 
 # Shortcut icon + url
-shortcut.jcmsplugin.openRainbow.icon: plugins/RainbowPlugin/images/OpenRainbowLogo.png
+shortcut.jcmsplugin.openRainbow.icon: plugins/RainbowPlugin/images/rb.png
 shortcut.jcmsplugin.openRainbow.link: plugins/RainbowPlugin/jsp/app/Rainbow.jsp
 
 # LESS
 channel.less.plugins/RainbowPlugin/css/openrainbow.css: plugins/RainbowPlugin/css/Rainbow.less
 channel.less.plugins/RainbowPlugin/css/sidebar.css: plugins/RainbowPlugin/css/sidebar.less
-channel.less.plugins/RainbowPlugin/css/openrainbow.css: plugins/RainbowPlugin/css/Rainbow.less
 channel.less.plugins/RainbowPlugin/css/load.css: plugins/RainbowPlugin/css/load.less
 
 
-
+icon.jcmsplugin-Rainbow-app: plugins/RainbowPlugin/images/rb.png
 
 #Add the token in the extra data of the Member
-extra.Member.jcmsplugin.rainbow.tokenRainbow:
+extra.Member.jcmsplugin.rainbow.tokenRainbow.hidden:
 
 #add the App ID ,Secret AppID and redirect_uri to the properties of the plugin
 jcmsplugin.rainbowPlugin.APPLICATIONID: 

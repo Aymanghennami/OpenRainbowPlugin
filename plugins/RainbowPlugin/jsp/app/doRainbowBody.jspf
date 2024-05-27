@@ -1,0 +1,20 @@
+ <div class="main" id="mainContent">
+        <!-- Chat Box -->
+        <div class="chat-box" id="chatBox" >
+            <!-- Message Container -->
+            <div class="message-container">
+                <!-- Example Message: Sent Message -->
+                <div class="message sent-message" id="sentMessage"></div>
+
+                <!-- Example Message: Received Message -->
+                <div class="message received-message" id="receivedMessage"></div>
+            </div>
+        </div>
+
+        <!-- Message Input Field and Send Button -->
+        <div class="input-container">
+            <input type="text" id="messageInput" class="message-input" placeholder="Type your message here...">
+            <button id="sendMessageBtn" class="send-button">Send </button>
+        </div>
+    </div>
+    

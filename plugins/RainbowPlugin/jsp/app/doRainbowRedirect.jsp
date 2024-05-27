@@ -32,7 +32,7 @@ String redirectedFromRainbowUrl=loginHandler.getRedirectedFromRainbowUrl();
 <div class="rainbow-loading-container">
 
   <div class="background-image-container">
-    <img src="../../images/rainbowBackground_1.jpg" alt="Loading background image">
+    <img src="plugins/RainbowPlugin/images/rainbowBackground_1.jpg" alt="Loading background image">
   </div>
 
   <div class="progress-bar-container">
@@ -40,11 +40,11 @@ String redirectedFromRainbowUrl=loginHandler.getRedirectedFromRainbowUrl();
   </div>
   
 <div class="logo-container">
-    <img class="rainbow-logo" src="../../images/OpenRainbowLogo-nb.png" alt="Rainbow logo">
+    <img class="rainbow-logo" src="plugins/RainbowPlugin/images/OpenRainbowLogo-nb.png" alt="Rainbow logo">
 </div>
 </div>
 
-  <img class="alcatel-logo" src="../../images/AlcatelLogo.png" alt="Alcatel logo">
+  <img class="alcatel-logo" src="plugins/RainbowPlugin/images/AlcatelLogo.png" alt="Alcatel logo">
 
 
 </div>

@@ -1,20 +1,3 @@
-@import "../../../css/jalios/core/init-mixins.less";
-@import "../../../css/jalios/core/app/jalios-app-variables.less";
-
-// Hook for JCMS
-@import "../../../css/plugin.less";
-
-//                                                                 
-@container-height: 100vh;
-@search-conversations-bg-color: #fff;
-@main-bg-color: #f2f2f2;
-@details-bg-color: #fff;
-@fixed-width: 250px; // Example fixed width for search-conversations and details
-
-// Container styles
-/* Import statements and other styles remain unchanged */
-
-/* Adjustments for the container and its children */
 .container {
     display: flex;
     flex-direction: row;
@@ -36,12 +19,30 @@
 }
 .contact-avatar{
     vertical-align: middle;
-  width: 40px;
+  width: 30px;
   border-radius: 100%;
   margin: 5px;
 }
 .conversation-item:hover{
     background-color:#D8D8D8
+}
+.conversation-item{
+    width:300px;
+    margin:15 px;
+    
+    
+}
+.conversation-item span{
+	text-transform: capitalize;
+}
+.Last-Massage{
+    color:#818181;
+    z-index:2;
+    margin-left:2px;
+    white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  pointer-events: none; 
 }
 
 .recent-conversations {
@@ -176,11 +177,3 @@
             padding: 5px 10px;
         }
         
-        
-      
-
-
-
-
-
-

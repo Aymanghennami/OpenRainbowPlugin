@@ -1,2 +1,24 @@
-<jalios:appSidebar css="no-focus" icon="jcmsplugin-Rainbow-app" iconTitleProp="jcmsplugin.Rainbow.app.title" >
+<jalios:appSidebar css="no-focus" icon="shortcut.jcmsplugin.openRainbow.icon" iconTitleProp="jcmsplugin.Rainbow.app.title" >
+
+<!-- <div id="sidebar">
+    <h3>Recent Conversations</h3>
+     <ul id="conversationList">
+           // Conversations will be populated here
+        </ul>
+</div>  -->
+  <div class="search-form">
+            <input type="text" id="searchInput" placeholder="Search...">
+        </div>
+ <div class="recent-conversations">
+            <div class="dropdown-header" id="recentConversationsHeader">
+                <i class="fas fa-chevron-right"></i>
+                <span id="toggleRecentBtn" class="toggle-button">Recent conversations</span>
+            </div>
+            <div class="flipper-flesh" id="recentConversationsList">
+            </div>
+
+        </div>
+
 </jalios:appSidebar>
+
+
