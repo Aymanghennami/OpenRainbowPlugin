@@ -1,0 +1,312 @@
+@import "../../../css/jalios/core/init-mixins.less";
+@import "../../../css/jalios/core/app/jalios-app-variables.less";
+
+// Hook for JCMS
+@import "../../../css/plugin.less";
+
+@main-bg-color: #f1f2f4;
+
+.main {
+    flex-grow: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: @main-bg-color;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    flex-direction: column;
+
+    .message-container {
+        display: flex;
+        flex-direction: column;
+
+        .message {
+            margin-left: 6px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 60%;
+            word-wrap: break-word;
+
+            position: relative;
+
+            flex-grow: 1;
+            /* Allow the message to grow to fill the remaining space */
+
+
+            &.sent-message {
+                align-self: flex-end;
+                background-color: #1f68d6;
+                color: white;
+                /* Ensure text color is visible */
+                border-radius: 5px;
+                padding: 5px 10px;
+            }
+
+            &.received-message {
+                align-self: flex-start;
+                background-color: white;
+                color: black;
+                /* Ensure text color is visible */
+                border-radius: 5px;
+                padding: 5px 10px;
+            }
+
+            .sent-deleted-message {
+
+                background-color: #1f68d6;
+                color: white;
+                text-decoration: line-through;
+                /* Strikethrough effect */
+                font-style: italic;
+                /* Italic font style */
+            }
+
+            .received-deleted-message {
+                background-color: white;
+                color: gray;
+                text-decoration: line-through;
+                /* Strikethrough effect */
+                font-style: italic;
+                /* Italic font style */
+            }
+
+        }
+
+        .message-metadata {
+            display: flex;
+            margin-top: 5px;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        .sent-metadata {
+            justify-content: flex-end;
+            /* Align metadata to the right for sent messages */
+            margin-left: auto;
+            /* Push metadata to the right */
+        }
+
+        .recived-metadata {
+            justify-content: flex-start;
+            /* Align metadata to the left for received messages */
+            margin-right: auto;
+            /* Push metadata to the left */
+
+            align-self: flex-end;
+            /* Align metadata to the bottom for received messages */
+
+        }
+
+        .message-date {
+            font-size: 0.7em;
+            color: #888;
+        }
+
+        .receipt-status {
+            font-size: 0.7em;
+            margin-left: 2px;
+            /* Small margin to separate the date and receipt status */
+        }
+
+        .avatar-message-container {
+            display: flex;
+            /* Use flexbox to align items */
+            align-items: center;
+            /* Align items vertically */
+            flex-direction: row;
+        }
+
+    }
+
+
+    /* Adjustments for the chat box */
+    .chat-box {
+        top: 20px;
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        max-height: calc(100% - 20px);
+        padding-top: 40px;
+
+    }
+
+    /* Adjustments for the input container */
+    .input-container {
+        background-color: white;
+        width: 96%;
+        align-items: center;
+        position: absolute;
+        bottom: 60px;
+        /* This positions the input container at the bottom, above any potential overlapping content */
+        height: 40px;
+        z-index: 10;
+        /* Ensures the input container stays above the chat box */
+
+        .message-input {
+            flex-grow: 1;
+            padding: 5px;
+            border: none;
+            /* Removed border */
+            border-radius: 5px;
+            outline: none;
+            /* Removed outline */
+            width: 50%;
+            margin-right: 4px;
+        }
+
+        .send-button {
+            border: none;
+            background-color: transparent;
+            border-radius: 5px;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+        }
+
+        .send-button:hover {
+            /* Optional hover effect */
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+        }
+    }
+
+    .chat-box,
+    .input-container {
+        display: none;
+    }
+
+    .message-metadata {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .sender-name {
+        font-weight: bold;
+    }
+
+    .message-date {
+        font-size: 0.8em;
+        color: #888;
+    }
+
+    .icon-button {
+        width: 38px;
+        height: 38px;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        margin-right: 5px;
+        color: inherit;
+    }
+
+    .icon-button:hover {
+        /* Optional hover effect */
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        position: relative;
+    }
+
+    .icon-button i {
+        font-size: 1.8rem;
+        color: #505050;
+    }
+
+    .send-button i {
+        font-size: 1.8rem;
+        /* Increased size */
+        color: #505050;
+    }
+
+    .contact-info {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        width: 95%;
+        position: absolute;
+        top: 10px;
+        height: 40px;
+        z-index: 10;
+        margin-left: 0px;
+        padding: 0px;
+        /* Added padding */
+        gap: 10px;
+    }
+
+    .clicked-avatar-container {
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .clicked-avatar-container img {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+    }
+
+    .clicked-contact-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Added to center the content vertically */
+    }
+
+    .clicked-contact-name {
+        font-size: 18px;
+    }
+
+    .status-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .clicked-status-icon {
+        font-size: 12px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 2px;
+        margin-right: 5px;
+        /* Added margin to separate from text */
+    }
+
+    .clicked-status-icon.online {
+        color: green;
+    }
+
+    .clicked-status-icon.away {
+        color: rgb(255, 204, 0);
+        transform: rotate(15deg) scaleX(-1);
+    }
+
+    .clicked-status-icon.dnd {
+        color: red;
+    }
+
+    .clicked-status-icon.offline {
+        color: grey;
+    }
+
+    .clicked-status-text {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .actions i {
+        cursor: pointer;
+        margin-right: 7px;
+    }
+
+
+}

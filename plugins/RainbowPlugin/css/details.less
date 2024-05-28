@@ -1,0 +1,187 @@
+@import "../../../css/jalios/core/init-mixins.less";
+@import "../../../css/jalios/core/app/jalios-app-variables.less";
+
+// Hook for JCMS
+@import "../../../css/plugin.less";
+
+@details-bg-color: #ffffff;
+@fixed-width: 300px;
+
+.user-details {
+    flex: 0 0 @fixed-width;
+    /* Does not grow or shrink, maintains fixed width */
+    background-color: @details-bg-color;
+    flex-direction: column;
+    position: relative;
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-right: 0px;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.top-icons {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    justify-content: space-around;
+    padding: 10px 0;
+    background-color: #f1f1f1;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    /* Make sections clickable */
+}
+
+.user-section.active {
+    background-color: #1f68d6;
+    color: #fff;
+    border-radius: 10px;
+    /* Highlight active section */
+}
+
+.profile-icon,
+.call-icon,
+.file-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+
+.contact-details {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+ .contact-detail-avatar {
+            left: 0px;
+            width: 300px;
+            height: 220px;
+            border-radius: 6px;
+}
+
+.contact-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.favorite-button,
+.invite-button {
+    margin: 0 5px;
+    padding: 8px 20px;
+    border: none;
+    background-color: #007bff;
+    /* Blue color */
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.contact-display-name {
+    font-size: 14px;
+    color: #555;
+
+    font-weight: bold;
+    margin-left: 11px;
+}
+.contact-information {
+    margin-top: 20px;
+    text-align: left;
+        width: 100%;
+    max-width: 400px;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.info-label {
+        margin-left: 5px;
+    font-weight: bold;
+}
+
+.remove-from-network-button {
+    margin-top: 20px;
+    padding: 8px 20px;
+    border: none;
+    background-color: #f8d7da;
+    /* Light red color */
+    color: #721c24;
+    /* Dark red color */
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.remove-from-network-button:hover {
+    background-color: #dc3545;
+    color: #fff;
+
+}
+
+.name-company-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.room-avatar {
+    width: 300px;
+            height: 220px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.avatar-container {
+    position: relative;
+    margin-right: 10px;
+}
+
+.contact-members-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.contact-info {
+    flex: 1;
+}
+
+.contact-company {
+    font-size: 14px;
+    color: #666;
+}
+
+.organizer-icon {
+    margin-left: 10px;
+    color: rgb(100, 100, 100); /* Lighter shade of black */
+    font-size: 15px;
+}
+
+.invited-icon {
+    margin-left: 10px;
+    color: rgb(100, 100, 100); /* Lighter shade of black */
+    font-size: 15px;
+}

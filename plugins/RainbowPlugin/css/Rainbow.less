@@ -6,181 +6,790 @@
 
 //                                                                 
 @container-height: 100vh;
-@search-conversations-bg-color: #fff;
-@main-bg-color: #f2f2f2;
-@details-bg-color: #fff;
-@fixed-width: 250px; // Example fixed width for search-conversations and details
+@search-conversations-bg-color: #ffffff;
+@details-bg-color: #ffffff;
+@fixed-width: 260px;
 
-// Container styles
-/* Import statements and other styles remain unchanged */
 
-/* Adjustments for the container and its children */
 .container {
+
+ //   margin-left: 0px;
     display: flex;
-    flex-direction: row;
     height: 100vh;
+    position: fixed;
     overflow: hidden;
-    flex: 1; // Allows the content section to grow and fill available space
+    right: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    width: 100%;
+
 }
-.details {
+.search-conversations {
+    left: 0 px;
     flex: 0 0 @fixed-width;
-    padding: 20px;
-    background-color: #ffffff; // Default background color for search-conversations and details
+    /* Fixed width */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: @search-conversations-bg-color;
+    position: relative;
+
+}
+
+// search input with the buttons to filter the search 
+.search-form {
+
+    margin-left: 10px;
+    margin-right: 5px;
+    position: relative;
+    width: 160px;
+    display: flex;
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    padding: 10px 30px 8px 40px;
+    background-color: #f2f2f2;
+    width: 250px; //Width of the input 
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 8px;
+    outline: none;
+    margin-right: 10px;
+    
+
+}
+
+.search-form .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    color: #888;
+
+}
+
+.search-form #closeButton {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: black;
+    font-size: 20px;
+}
+
+.search-form #closeButton:hover {
+    color: #222;
+    /* Darker color */
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Darker background color */
+    cursor: pointer;
+    border-radius: 3px;
+    /* Make it round */
+    width: 22px;
+    height: 22px;
+    z-index: 3;
+    /* Ensure it's above the icon */
+}
+
+.search-form #closeButton:hover i {
+    position: relative;
+    top: 2px;
+    /* Adjust as needed for alignment */
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    /* Adjust as needed for alignment */
+}
+
+.search-options {
+    margin-top: 8px; //space between the buttons and the input
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow wrapping of buttons */
+    justify-content: center;
+    /* Center-align buttons */
     display: none;
+    width: 250px;
+}
+
+.search-option {
+    padding: 6px 10px;
+    /* Decrease padding to make the buttons smaller */
+    font-size: 12px;
+    /* Decrease font size to make the text smaller */
+    border: none;
+    background-color: #f1f2f4;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Add transition for smooth hover effect */
+    border-radius: 4px;
+    /* Add border radius to buttons */
+    margin: 4px;
+    /* Add margin to create space between buttons */
+    font-weight: bold;
+    /* Make the text bold */
+
+}
+
+.search-option.active {
+    background-color: #0270de;
+    /* Blue background for selected option */
+    color: #fff;
+    /* White text for selected option */
+    font-weight: bold;
+    /* Bold text for selected option */
+}
+
+.search-form.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    height: 2px;
+    background-color: #0270de;
+    /* Blue line at the bottom of input */
+}
+
+/* Apply hover effect only to unselected options */
+.search-option:not(.active):hover {
+    background-color: #e5e5e5;
+    /* Grey background on hover for unselected options */
+}
+
+/* Recent conversations CSS */
+.recent-conversations {
+    margin-top: 9px;
+    margin-left: 10px;
+    width: 240px;
+    display: flex;
     flex-direction: column;
     position: relative;
-    margin-top: 20px;
-    flex-shrink: 0;
+}
+
+.dropdown-header {
+    display: flex;
+    cursor: pointer;
+    color: #888;
+    margin-bottom: 6px;
+    margin-left: 0px;
+}
+
+
+.dropdown-header i {
+    
+    margin-left: 0; 
+    margin-top: 3px;
+    font-size: 11px;
+    display: flex;
     align-items: center;
+    justify-content: center;
 
 }
-.contact-avatar{
-    vertical-align: middle;
-  width: 40px;
-  border-radius: 100%;
-  margin: 5px;
-}
-.conversation-item:hover{
-    background-color:#D8D8D8
+
+.dropdown-header span {
+    margin-left: 25px;
+    font-size: 13px;
+    color: #888;
+    outline: none;
+
 }
 
-.recent-conversations {
-            width: 200px;
-            padding: 15px;
-            margin: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            position: relative;
-        }
 
-        .dropdown-header {
+.flipper-flesh {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Rotate chevron icon when recent conversations are expanded */
+.recent-conversations.expanded .dropdown-header i {
+    transform: rotate(90deg);
+}
+
+/* Show flipper flesh when recent conversations are expanded */
+.recent-conversations.expanded .flipper-flesh {
+    display: block;
+}
+
+ // Apply hover effect to dropdown header and flipper 
+.dropdown-header:hover i {
+    background-color: #e5e5e5;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    
+}
+
+/* Keep the i element's position and prevent shifting */
+.dropdown-header i:hover {
+    margin-left: 0;
+} 
+
+.conversation-item {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    /* Rounded corners */
+    margin-bottom: 4px;
+    padding: 7px;
+    /* Ensure padding is included in the hover effect */
+}
+
+.conversation-item:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+    padding: 7px;
+    box-shadow: 0 0 10px #f2f2f2(0, 0, 0, 0.1);
+}
+
+
+.conversation-item.active {
+    background: #1f68d6;
+}
+
+.conversation-item.active .contact-name,
+.conversation-item.active .last-message {
+    color: white;
+}
+
+
+.search-conversations.collapsed.recent-conversations {
+    display: flex;
+}
+
+.search-conversations.collapsed.recent-conversations.dropdown-header,
+.search-conversations.collapsed.recent-conversations.conversation-item {
+    display: inline-block;
+}
+
+
+.avatar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.contact-avatar {
+    flex: 0;
+    width: 38px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.status-icon {
+    align-items: center;
+    position: absolute;
+    bottom: 1px;
+    right: 2px;
+    font-size: 12px;
+    background-color: white;
+    /* Makes the background white */
+    border-radius: 50%;
+    /* Creates a circular shape */
+    padding: 2px;
+    /* Adds space between the icon and the edge of the circle */
+    z-index: 10;
+    /* Ensures it appears above the avatar icon */
+}
+
+.status-icon.online {
+    color: green;
+}
+
+.status-icon.away {
+    color: rgb(255, 204, 0);
+    transform: rotate(15deg) scaleX(-1);
+}
+
+.status-icon.dnd {
+    color: red;
+}
+
+.status-icon.offline {
+    color: grey;
+}
+
+.text-container {
+    margin-left: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-name {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    margin-left: 3px;
+}
+
+.last-message {
+    margin-left: 3px;
+    /* Space between avatar and text container */
+    font-size: 13px;
+    color: #888;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Truncate text with ellipsis */
+    white-space: nowrap;
+    /* Prevent wrapping */
+}
+
+.missed-count {
+  position: absolute; /* Absolute positioning for right-aligned placement */
+  top: 50%; /* Vertical centering */
+  transform: translateY(-50%); /* Vertical centering adjustment */
+  right: 10px;  /* Adjust right margin for desired spacing */
+  display: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background-color: red;
+  color: white;
+  text-align: center;
+  line-height: 20px; /* Aligns the text vertically in the center */
+}
+
+//
+.control-buttons {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* Distribute space evenly between items */
+    gap: 10px;
+    /* Space between icons */
+}
+
+.notification-button,
+.sound-icon-wrapper,
+.toggle-container {
+    cursor: pointer;
+}
+
+.notification-button {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 7px;
+ 
+}
+
+
+.sound-icon-wrapper {
+    display: inline-flex;
+    /* Ensures the icon stays together */
+    margin-right: 10px;
+    margin-top: 2.5px;
+}
+
+.toggle-container {
+    cursor: pointer;
+    margin-bottom: 6px;
+}
+
+.icon-group {
+    /* Styles for the new container */
+    display: flex;
+    align-items: center;
+    /* Aligns items vertically in the middle */
+    gap: 16px;
+    /* Space between icons */
+    cursor: pointer;
+}
+
+
+.toggle-icon {
+    font-size: 16px;
+    /* Adjust size as needed */
+    color: #333;
+    bottom: 5px;
+}
+
+
+.notification-center {
+    position: absolute;
+    top: 115px; 
+    left: 450px; 
+    transform: translate(-50%, -100%);
+    width: 400px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    padding: 10px;
+    display: flex;
+}
+
+
+.notification-counter {
+    position: absolute;
+    top: -8px;
+    right: 8px;
+    color: red;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px;
+}
+
+.notification-card {
+    position: relative; /* Needed for ::after positioning */
+    overflow: hidden; /* Prevents the arrow from extending beyond the card */
+}
+
+
+
+.notification-title {
+    margin-top: 3px;
+    font-size: 17px;
+    color: #333;
+}
+
+.invitation-item {
+            list-style: none;
+            padding: 3px 0;
+            border-bottom: 1px solid #ccc;
             display: flex;
             align-items: center;
-            cursor: pointer;
-            color: #888;
         }
 
-        .dropdown-header span {
-            margin-left: 5px;
-            font-size: 14px;
+        .invitation-avatar {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin-right: 10px;
         }
 
-        .dropdown-header i {
-            margin-right: 5px;
-            transition: transform 0.3s;
+        .invitation-text {
+            flex-grow: 1;
         }
 
-        .flipper-flesh {
-            display: none;
-        }
-
-        .recent-conversations.expanded .flipper-flesh {
+        .invitation-text span {
             display: block;
         }
 
-        .recent-conversations.expanded .dropdown-header i {
-            transform: rotate(90deg);
+        .accept-icon,
+        .decline-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+            color: #28a745;
         }
-        
-// Profile icon styles
-.profile-icon {
-    cursor: pointer;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    width: 25px;
-    height: 25px;
-    z-index: 1;
-    margin-top: 0px;
-    margin-bottom: 20px;
-}
 
-.profile-icon:hover::before {
-    content: "";
-    position: absolute;
-    top: -5px; /* Adjust as needed for desired size */
-    left: -5px; /* Adjust as needed for desired size */
-    width: calc(100% + 10px); /* Adjust as needed for desired size */
-    height: calc(100% + 10px); /* Adjust as needed for desired size */
-    background-color: @profile-icon-hover-bg;
-    z-index: -1; /* Ensure it's behind the icon */
-    border-radius: 5px; /* Add border-radius for rounded corners */
-}
-.message-input {
-            flex-grow: 1;
+        .decline-icon {
+            color: #dc3545;
+        }
+        .main {
+    flex-grow: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: @main-bg-color;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    flex-direction: column;
+
+    .message-container {
+        display: flex;
+        flex-direction: column;
+
+        .message {
+            margin-left: 6px;
             padding: 10px;
-            border: 1px solid #ccc;
+            border-radius: 10px;
+            max-width: 60%;
+            word-wrap: break-word;
+
+            position: relative;
+
+            flex-grow: 1;
+            /* Allow the message to grow to fill the remaining space */
+
+
+            &.sent-message {
+                align-self: flex-end;
+                background-color: #1d4ed8;
+                color: white;
+                /* Ensure text color is visible */
+                border-radius: 5px;
+                padding: 5px 10px;
+                margin: 5px;
+            }
+
+            &.received-message {
+                align-self: flex-start;
+                background-color: white;
+                color: black;
+                /* Ensure text color is visible */
+                border-radius: 5px;
+                padding: 5px 10px;
+                margin: 5px;
+            }
+
+            .sent-deleted-message {
+
+                background-color: #1f68d6;
+                color: white;
+                text-decoration: line-through;
+                /* Strikethrough effect */
+                font-style: italic;
+                /* Italic font style */
+            }
+
+            .received-deleted-message {
+                background-color: white;
+                color: gray;
+                text-decoration: line-through;
+                /* Strikethrough effect */
+                font-style: italic;
+                /* Italic font style */
+            }
+
+        }
+
+        .message-metadata {
+            display: flex;
+            margin-top: 5px;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        .sent-metadata {
+            justify-content: flex-end;
+            /* Align metadata to the right for sent messages */
+            margin-left: auto;
+            /* Push metadata to the right */
+        }
+
+        .recived-metadata {
+            justify-content: flex-start;
+            /* Align metadata to the left for received messages */
+            margin-right: auto;
+            /* Push metadata to the left */
+
+            align-self: flex-end;
+            /* Align metadata to the bottom for received messages */
+
+        }
+
+        .message-date {
+            font-size: 0.7em;
+            color: #888;
+        }
+
+        .receipt-status {
+            font-size: 0.7em;
+            margin-left: 2px;
+            /* Small margin to separate the date and receipt status */
+        }
+
+        .avatar-message-container {
+            display: flex;
+            /* Use flexbox to align items */
+            align-items: center;
+            /* Align items vertically */
+            flex-direction: row;
+        }
+
+    }
+
+
+    /* Adjustments for the chat box */
+    .chat-box {
+        top: 20px;
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        max-height: calc(100% - 20px);
+        padding-top: 40px;
+
+    }
+
+    /* Adjustments for the input container */
+    .input-container {
+        background-color: white;
+        width: 96%;
+        align-items: center;
+        position: absolute;
+        bottom: 60px;
+        /* This positions the input container at the bottom, above any potential overlapping content */
+        height: 40px;
+        z-index: 10;
+        /* Ensures the input container stays above the chat box */
+
+        .message-input {
+            flex-grow: 1;
+            padding: 5px;
+            border: none;
+            /* Removed border */
             border-radius: 5px;
             outline: none;
-            width: 91%;
+            /* Removed outline */
+            width: 50%;
             margin-right: 4px;
         }
-.send-button {
-            background-color: #007bff;
-            color: #fff;
+
+        .send-button {
             border: none;
+            background-color: transparent;
             border-radius: 5px;
-            width: 60px;
+            width: 38px;
             height: 38px;
             cursor: pointer;
         }
 
+        .send-button:hover {
+            /* Optional hover effect */
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+        }
+    }
+
+    .chat-box,
+    .input-container {
+        display: none;
+    }
+
+    .message-metadata {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .sender-name {
+        font-weight: bold;
+    }
+
+    .message-date {
+        font-size: 0.8em;
+        color: #888;
+    }
+
+    .icon-button {
+        width: 38px;
+        height: 38px;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        margin-right: 5px;
+        color: inherit;
+    }
+
+    .icon-button:hover {
+        /* Optional hover effect */
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        position: relative;
+    }
+
+    .icon-button i {
+        font-size: 1.8rem;
+        color: #505050;
+    }
+
+    .send-button i {
+        font-size: 1.8rem;
+        /* Increased size */
+        color: #505050;
+    }
+
+    .contact-info {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        width: 95%;
+        position: absolute;
+        top: 10px;
+        height: 40px;
+        z-index: 10;
+        margin-left: 0px;
+        padding: 0px;
+        /* Added padding */
+        gap: 10px;
+    }
+
+    .clicked-avatar-container {
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .clicked-avatar-container img {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+    }
+
+    .clicked-contact-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Added to center the content vertically */
+    }
+
+    .clicked-contact-name {
+        font-size: 18px;
+    }
+
+    .status-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .clicked-status-icon {
+        font-size: 12px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 2px;
+        margin-right: 5px;
+        /* Added margin to separate from text */
+    }
+
+    .clicked-status-icon.online {
+        color: green;
+    }
+
+    .clicked-status-icon.away {
+        color: rgb(255, 204, 0);
+        transform: rotate(15deg) scaleX(-1);
+    }
+
+    .clicked-status-icon.dnd {
+        color: red;
+    }
+
+    .clicked-status-icon.offline {
+        color: grey;
+    }
+
+    .clicked-status-text {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .actions i {
+        cursor: pointer;
+        margin-right: 7px;
+    }
 
 
-
-
-// Hover effect for sidebar icons
-.sidebar-icon:hover {
-    background-color: transparent;
-    border-radius: 5px;
 }
-
-// Tooltip styles
-.tooltip {
-    display: none;
-    position: absolute;
-    right: calc(100%);
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: @tooltip-bg-color;
-    color: @tooltip-text-color;
-    padding: @tooltip-padding;
-    border-radius: 5px;
-    z-index: 3;
-}
-
-
-
-.message-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            margin-bottom: 10px;
-        }
-
-       .sent-message {
-            align-self: flex-end;
-            background-color: #007bff;
-            border-radius: 10px;
-            padding: 5px 10px;
-            color:#ffff
-        }
-
-        .received-message {
-            align-self: flex-start;
-            background-color: #E5E5EA;
-            border-radius: 10px;
-            padding: 5px 10px;
-        }
         
         
-      
-
-
-
-
-
-

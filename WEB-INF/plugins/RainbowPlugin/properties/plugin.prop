@@ -22,10 +22,13 @@ shortcut.jcmsplugin.openRainbow.icon: plugins/RainbowPlugin/images/rb.png
 shortcut.jcmsplugin.openRainbow.link: plugins/RainbowPlugin/jsp/app/Rainbow.jsp
 
 # LESS
+# LESS plugins/RainbowPlugin/css/conversation.css
 channel.less.plugins/RainbowPlugin/css/openrainbow.css: plugins/RainbowPlugin/css/Rainbow.less
 channel.less.plugins/RainbowPlugin/css/sidebar.css: plugins/RainbowPlugin/css/sidebar.less
+channel.less.plugins/RainbowPlugin/css/openrainbow.css: plugins/RainbowPlugin/css/Rainbow.less
 channel.less.plugins/RainbowPlugin/css/load.css: plugins/RainbowPlugin/css/load.less
-
+channel.less.plugins/RainbowPlugin/css/conversation.css: plugins/RainbowPlugin/css/conversation.less
+channel.less.plugins/RainbowPlugin/css/details.css: plugins/RainbowPlugin/css/details.less
 
 icon.jcmsplugin-Rainbow-app: plugins/RainbowPlugin/images/rb.png
 

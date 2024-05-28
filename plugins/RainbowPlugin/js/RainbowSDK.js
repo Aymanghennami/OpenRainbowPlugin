@@ -1,4 +1,6 @@
-import rainbowSDK from '../rainbow-web-sdk/src/rainbow-sdk.min.js'; 
+import rainbowSDK from '../rainbow-web-sdk/src/rainbow-sdk.min.js';
+
+
 
 let onReady = function onReady() {
     console.log('[Hello World] :: On SDK Ready!');
@@ -24,7 +26,7 @@ function fetchLoginInfo() {
                         console.log('[Hello World] :: Signed in Successfully');
                         console.log('Account:', account);
                         getConversations(); // Fetch conversations after successful sign-in
-                       
+
                     })
                     .catch(function(err) {
                         console.log('[Hello World] :: Something went wrong with the signing...', err);
@@ -44,14 +46,14 @@ function handleSearch() {
     console.log('[Hello World] :: Search By ' + keyword);
 
     rainbowSDK.contacts.searchByName(keyword, 10)
-        .then(function (usersFound) {
+        .then(function(usersFound) {
             // Get the container to display search results
             let searchResultsContainer = document.getElementById('recentConversationsList');
             searchResultsContainer.innerHTML = '';
 
             if (usersFound.length > 0) {
                 // At least one user has been found
-                usersFound.forEach(function (user) {
+                usersFound.forEach(function(user) {
                     // Create a conversation item similar to recent conversations
                     var contactName = user.firstname + ' ' + user.lastname;
                     var contactAvatar = user.avatar;
@@ -84,15 +86,15 @@ function handleSearch() {
                     conversationItem.appendChild(nameSpan);
 
                     // Make the conversation item clickable
-                    conversationItem.addEventListener('click', function () {
+                    conversationItem.addEventListener('click', function() {
 
                         console.log('the id of selected contact', user.dbId)
 
-                        rainbowSDK.conversations.getConversationByContactId(user.dbId).then(function (conversation) {
+                        rainbowSDK.conversations.getConversationByContactId(user.dbId).then(function(conversation) {
                             console.log('the conversation for the selected contact', conversation);
                             handleConversationClick(conversation.dbId);
 
-                        }).catch(function (err) {
+                        }).catch(function(err) {
                             console.log('something went Wrong while getting the conversation for each search result', err)
                         });
 
@@ -108,7 +110,7 @@ function handleSearch() {
                 searchResultsContainer.textContent = 'No contacts found.';
             }
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // Handle any errors that occur during the search
             console.error('[Hello World] :: Error occurred during search:', error);
         });
@@ -116,140 +118,197 @@ function handleSearch() {
 
 // Add event listener to the search input
 document.getElementById('searchInput').addEventListener('input', handleSearch);
-function getConversations(){
+function getConversations() {
     rainbowSDK.conversations.getAllConversations()
-                    .then(function (conversations) {
-                        const flipperFlesh = document.getElementById('recentConversationsList');
-                        flipperFlesh.innerHTML = '';
+        .then(function(conversations) {
+            const flipperFlesh = document.getElementById('recentConversationsList');
+            flipperFlesh.innerHTML = '';
 
-                        conversations.forEach(conversation => {
+            conversations.forEach(conversation => {
+                var lastMessage = conversation.lastMessageText;
+                console.log('test laste message', lastMessage)
+
+
+                if (conversation.type === 0) {
+
+                    rainbowSDK.contacts.getContactById(conversation.contact.dbId)
+                        .then(contact => {
+
+                            /* console.log('the conversation id', conversation);*/
+                            var contactName = contact.firstname + ' ' + contact.lastname;
+                            var contactAvatar = contact.avatar;
+
+                            //var name=contact.name;
+
+
+
+                            // Create the conversation item container
+                            var conversationItem = document.createElement('div');
+                            conversationItem.classList.add('conversation-item');
+                            conversationItem.id = conversation.dbId;
+
+                            // Create the avatar container
+                            var avatarContainer = document.createElement('div');
+                            avatarContainer.classList.add('avatar-container');
+
+                            // Create the avatar element
+                            var avatarImg = document.createElement('img');
+                            avatarImg.classList.add('contact-avatar');
+                            avatarImg.alt = contactName;
+
+
+                            if (contactAvatar) {
+                                // If avatar exists, use it
+                                avatarImg.src = contactAvatar.src;
+                            } else {
+                                // If avatar is null, use first letter of the name
+                                var initials = contactName.split(' ').map(part => part.charAt(0)).join('');
+                                avatarImg.src = `https://ui-avatars.com/api/?name=${initials}`;
+                            }
+
+                            var statusIcon = document.createElement('i');
+                            statusIcon.classList.add('status-icon');
+
+                            // Clear any existing status classes
+                            console.log("Contact status before setting icon:", contact.status);
+
+                            // Check the contact status and add the appropriate icon
+                            switch (contact.status) {
+                                case 'online':
+                                    statusIcon.classList.add('fas', 'fa-check-circle', 'online');
+                                    break;
+                                case 'away':
+                                    statusIcon.classList.add('fas', 'fa-moon', 'away');
+                                    break;
+                                case 'dnd':
+                                    statusIcon.classList.add('fas', 'fa-minus-circle', 'dnd');
+                                    break;
+                                case 'unknown':
+                                    statusIcon.classList.add('fas', 'fa-circle', 'offline');
+                                    break;
+                                case 'offline':
+                                default:
+                                    statusIcon.classList.add('fas', 'fa-circle', 'offline');
+                                    break;
+                            }
+
+                            // Append the avatar and status indicator to the avatar container
+                            avatarContainer.appendChild(avatarImg);
+                            avatarContainer.appendChild(statusIcon);
+
+                            // Create the text container
+                            var textContainer = document.createElement('div');
+                            textContainer.classList.add('text-container');
+
+                            // Create the name element
+                            var nameSpan = document.createElement('span');
+                            nameSpan.classList.add('contact-name');
+                            nameSpan.textContent = contactName;
+
+                            // Create the last message element
+                            var lastMessageSpan = document.createElement('span');
+                            lastMessageSpan.classList.add('last-message'); // Add CSS class for styling
+                            lastMessageSpan.textContent= lastMessage;
+
+                            // Retrieve the last message text
                             var lastMessage = conversation.lastMessageText;
-                            console.log('test laste message' , lastMessage)
-                            
-
-                            if (conversation.type === 0) {
-
-                                rainbowSDK.contacts.getContactById(conversation.contact.dbId)
-                                    .then(contact => {
-
-                                       /* console.log('the conversation id', conversation);*/
-                                        var contactName = contact.firstname + ' ' + contact.lastname;
-                                        var contactAvatar = contact.avatar;
-                                        
-                                        //var name=contact.name;
-                                        
-
-                                        // Create the conversation item
-                                        var conversationItem = document.createElement('div');
-                                        conversationItem.classList.add('conversation-item');
-                                        // Create the avatar element
-                                        var avatarImg = document.createElement('img');
-                                        avatarImg.classList.add('contact-avatar');
-
-                                        avatarImg.src = contactAvatar;
-                                        avatarImg.alt = contactName;
-
-                                        // Create the avatar element
-                                        var avatarImg = document.createElement('img');
-                                        avatarImg.classList.add('contact-avatar');
-                                        avatarImg.alt = contactName;
-
-                                        if (contactAvatar) {
-                                            // If avatar exists, use it
-                                            avatarImg.src = contactAvatar.src;
-                                        } else {
-                                            // If avatar is null, use first letter of the name
-                                            var initials = contactName.split(' ').map(part => part.charAt(0)).join('');
-                                            avatarImg.src = `https://ui-avatars.com/api/?name=${initials}`;
-                                        }
-
-                                        // Set the size of the avatar
-                                      
-
-                                        // Create the name element
-                                        var nameSpan = document.createElement('span');
-                                        nameSpan.classList.add('name');
-                                        nameSpan.textContent = contactName;
-                                        // Create the last message element
-                                        var lastMessageSpan = document.createElement('span');
-                                        lastMessageSpan.classList.add('Last-Massage');
-                                        lastMessageSpan.textContent = lastMessage;
-                                        
-
-                                        // Append avatar and name to the conversation item
-                                        conversationItem.appendChild(avatarImg);
-                                        conversationItem.appendChild(nameSpan);
-                                        conversationItem.appendChild(lastMessageSpan);
-
-                                        // Make the conversation item clickable
-                                        conversationItem.addEventListener('click', function () {
-                                            var contactId = contact.dbId;
-                                            handleConversationClick(conversation.dbId);
-                                            handleDisplayContact(contactId);
-
-                                        });
-
-                                        // Append the conversation item to the flipper flesh
-                                        flipperFlesh.appendChild(conversationItem);
-                                    })
-                                    .catch(err => {
-                                        console.log('[Hello World] :: Something went wrong while getting the contactById..', err)
-                                    });
-
+                            lastMessageSpan.textContent= lastMessage;
+                            // Create the missed messages count element
+                            var missedCountSpan = document.createElement('span');
+                            missedCountSpan.classList.add('missed-count');
+                            if (conversation.missedCounter > 0) {
+                                missedCountSpan.style.display = 'inline-block';
+                                missedCountSpan.textContent = conversation.missedCounter;
                             }
 
-                            if (conversation.type === 1) {
-                                // Create the conversation item
-                                var conversationItem = document.createElement('div');
-                                conversationItem.classList.add('conversation-item');
+                            // Append name, last message, and missed count to the text container
+                            textContainer.appendChild(nameSpan);
+                            textContainer.appendChild(lastMessageSpan);
 
-                                // Create the avatar element
-                                var avatarImg = document.createElement('img');
-                                avatarImg.classList.add('contact-avatar');
-                              
 
-                                // Set the avatar source
-                                if (conversation.room.avatar) {
-                                    avatarImg.src = conversation.room.avatar;
-                                } else {
-                                    // If no avatar, use the first letter of the room name as initials
-                                    var initials = conversation.room.name.charAt(0).toUpperCase();
-                                    avatarImg.src = `https://ui-avatars.com/api/?name=${initials}`;
-                                }
-
-                                // Create the name element
-                                var nameSpan = document.createElement('span');
-                                nameSpan.classList.add('name');
-                                nameSpan.textContent = conversation.room.name;
-                                
-                                 // Create the last message element
-                                        var lastMessageSpan = document.createElement('span');
-                                        lastMessageSpan.classList.add('Last-Massage');
-                                        lastMessageSpan.textContent = lastMessage;
-                                        
-
-                                // Append avatar and name to the conversation item
-                                conversationItem.appendChild(avatarImg);
-                                conversationItem.appendChild(nameSpan);
-                                conversationItem.appendChild(lastMessageSpan);
-
-                                // Make the conversation item clickable
-                                conversationItem.addEventListener('click', function () {
-                                    handleConversationClick(conversation.dbId);
-                                    // Optionally, you can handle other actions when a bubble conversation item is clicked
-                                });
-
-                                // Append the conversation item to the flipper flesh
-                                flipperFlesh.appendChild(conversationItem);
-                            }
+                            // Append avatar container and text container to the conversation item
+                            conversationItem.appendChild(avatarContainer);
+                            conversationItem.appendChild(textContainer);
+                            conversationItem.appendChild(missedCountSpan);
 
 
 
+
+
+
+
+                          
+
+
+                            // Make the conversation item clickable
+                            conversationItem.addEventListener('click', function() {
+                                var contactId = contact.dbId;
+                                handleConversationClick(conversation.dbId);
+                                handleDisplayContact(contactId);
+
+                            });
+
+                            // Append the conversation item to the flipper flesh
+                            flipperFlesh.appendChild(conversationItem);
+                        })
+                        .catch(err => {
+                            console.log('[Hello World] :: Something went wrong while getting the contactById..', err)
                         });
-                    })
-                    .catch(function (error) {
-                        console.error('Error getting conversations:', error);
+
+                }
+
+                if (conversation.type === 1) {
+                    // Create the conversation item
+                    var conversationItem = document.createElement('div');
+                    conversationItem.classList.add('conversation-item');
+
+                    // Create the avatar element
+                    var avatarImg = document.createElement('img');
+                    avatarImg.classList.add('contact-avatar');
+
+
+                    // Set the avatar source
+                    if (conversation.room.avatar) {
+                        avatarImg.src = conversation.room.avatar;
+                    } else {
+                        // If no avatar, use the first letter of the room name as initials
+                        var initials = conversation.room.name.charAt(0).toUpperCase();
+                        avatarImg.src = `https://ui-avatars.com/api/?name=${initials}`;
+                    }
+
+                    // Create the name element
+                    var nameSpan = document.createElement('span');
+                    nameSpan.classList.add('name');
+                    nameSpan.textContent = conversation.room.name;
+
+                    // Create the last message element
+                    var lastMessageSpan = document.createElement('span');
+                    lastMessageSpan.classList.add('Last-Massage');
+                    lastMessageSpan.textContent = lastMessage;
+
+
+                    // Append avatar and name to the conversation item
+                    conversationItem.appendChild(avatarImg);
+                    conversationItem.appendChild(nameSpan);
+                    conversationItem.appendChild(lastMessageSpan);
+
+                    // Make the conversation item clickable
+                    conversationItem.addEventListener('click', function() {
+                        handleConversationClick(conversation.dbId);
+                        // Optionally, you can handle other actions when a bubble conversation item is clicked
                     });
+
+                    // Append the conversation item to the flipper flesh
+                    flipperFlesh.appendChild(conversationItem);
+                }
+
+
+
+            });
+        })
+        .catch(function(error) {
+            console.error('Error getting conversations:', error);
+        });
 }
 
 
@@ -334,11 +393,11 @@ function handleDisplayContact(contactId) {
         });
 }
 
-  document.getElementById("recentConversationsHeader").addEventListener("click", function () {
-            this.parentElement.classList.toggle("expanded");
-        });
-        
-        function handleConversationClick(conversationId) {
+document.getElementById("recentConversationsHeader").addEventListener("click", function() {
+    this.parentElement.classList.toggle("expanded");
+});
+
+function handleConversationClick(conversationId) {
     // Get the main content element
     const mainContent = document.getElementById('mainContent');
 
@@ -384,7 +443,7 @@ function handleDisplayContact(contactId) {
 
     // Add event listener to send button
     const sendMessageBtn = document.getElementById('sendMessageBtn');
-    sendMessageBtn.addEventListener('click', function () {
+    sendMessageBtn.addEventListener('click', function() {
         const messageInput = document.getElementById('messageInput');
         const message = messageInput.value.trim(); // Trim whitespace from the message
         if (message !== '') {
@@ -400,13 +459,13 @@ function chatWithContact(contactId, message) {
     console.log('Starting chat with contact with ID :', contactId);
 
     rainbowSDK.contacts.getContactById(contactId)
-        .then(function (selectedContact) {
+        .then(function(selectedContact) {
             console.log('the contact found:', selectedContact);
             if (selectedContact) {
                 // Contact found, do something with it
                 var associatedConversation = null;
                 rainbowSDK.conversations.getConversationByContactId(selectedContact.dbId)
-                    .then(function (conversation) {
+                    .then(function(conversation) {
                         associatedConversation = conversation;
                         var lastMessage = associatedConversation.lastMessageText;
                         console.log('Last message:', lastMessage);
@@ -415,7 +474,7 @@ function chatWithContact(contactId, message) {
                         // Reload conversation after sending message
                         handleConversationClick(associatedConversation.dbId);
                     })
-                    .catch(function (err) {
+                    .catch(function(err) {
                         console.log('Error getting the associated conversation:', err);
                         reject(err); // Reject the promise if there's an error getting the conversation
                     });
@@ -424,7 +483,7 @@ function chatWithContact(contactId, message) {
                 reject(new Error('Contact not found')); // Reject the promise if the contact is not found
             }
         })
-        .catch(function (err) {
+        .catch(function(err) {
             console.log('Error getting contact by ID:', err);
             reject(err); // Reject the promise if there's an error getting the contact by ID
         });
@@ -506,7 +565,7 @@ let onStarted = function onStarted() {
 
 let onLoaded = function onLoaded() {
     console.log('[Hello World] :: On SDK Loaded');
-    
+
     // Send an AJAX GET Request to get the AppID and AppSecretID from the LoginInfo.jsp    
     $.ajax({
         url: 'http://localhost:8080/jcms/plugins/RainbowPlugin/jsp/app/LoginInfo.jsp',
@@ -518,7 +577,7 @@ let onLoaded = function onLoaded() {
         success: function(data) {
             let appID = data.appID;
             let appSecretID = data.appSecretID;
-            
+
             rainbowSDK
                 .initialize(appID, appSecretID)
                 .then(() => {
