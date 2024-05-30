@@ -1,4 +1,3 @@
-
 import rainbowSDK from '../rainbow-web-sdk/src/rainbow-sdk.min.js';
 import {handleConversationClick} from "./conversation.js";
 import {getRecentConversations} from "./conversation.js";
@@ -348,5 +347,4 @@ function onNewInvitationReceived(event) {
 }
 // Listen for the RAINBOW_ONCONTACTINVITATIONRECEIVED event
 document.addEventListener(RAINBOW_ONCONTACTINVITATIONRECEIVED, onNewInvitationReceived);
-
 

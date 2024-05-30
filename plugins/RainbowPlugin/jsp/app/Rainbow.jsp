@@ -51,7 +51,7 @@ if (token == null || token.equals("")) {
     jcmsContext.addCSSHeader("plugins/RainbowPlugin/css/openrainbow.css");
     jcmsContext.addJavaScript("plugins/RainbowPlugin/js/RainbowSDK.js");
 %>
- 
+ <%@ include file='/jcore/doHeader.jspf' %>
 
 <head>
 <link rel="stylesheet" href="plugins/RainbowPlugin/css/openrainbow.css">
