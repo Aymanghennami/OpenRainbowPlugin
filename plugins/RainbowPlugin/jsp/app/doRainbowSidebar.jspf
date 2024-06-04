@@ -40,54 +40,74 @@
     </div>
     
     <!-- Notification Center -->
-        <div id="notificationList" class="notification-center" style="display: none;">
-            <div class="notification-card">
-                <h3 class="notification-title">Notification Center</h3>
-                <ul id="invitationList"></ul>
-            </div>
-        </div>
-        
+	<div id="notificationList" class="notification-center"
+		style="display: none;">
+		<div class="notification-card">
+			<h3 class="notification-title">Notification Center</h3>
+			<div id="invitationContainer"></div>
+		</div>
+	</div>
 
-    <div class="search-form">
-        <i class="fas fa-search search-icon" id="searchIcon"></i> 
-        <i class="fas fa-times" id="closeButton" style="display: none;"></i> 
-        <input
-            type="text" id="searchInput" placeholder="People, bubbles...">
-    </div>
 
-    <div class="search-options">
-        <button class="search-option active" data-option="people">People</button>
-        <button class="search-option" data-option="bubbles">Bubbles</button>
-        <button class="search-option" data-option="text">Text</button>
-        <button class="search-option" data-option="channels">Channels</button>
-        <button class="search-option" data-option="companies">Companies</button>
-    </div>
+	<div class="search-form">
+		<i class="fas fa-search search-icon" id="searchIcon"></i> 
+		<i class="fas fa-times" id="closeButton" style="display: none;"></i> 
+		<input
+			type="text" id="searchInput" placeholder="People, bubbles...">
+	</div>
 
-    <div class="recent-conversations">
-        <div class="dropdown-header" id="recentConversationsHeader">
-            <i class="fas fa-chevron-right" id="recentConversationsHeader"></i> 
-            <span id="toggleRecentBtn"
-                class="toggle-button">RECENT CONVERSATIONS</span>
-        </div>
+	<div class="search-options">
+		<button class="search-option active" data-option="people">People</button>
+		<button class="search-option" data-option="bubbles">Bubbles</button>
+		<button class="search-option" data-option="text">Text</button>
+		<button class="search-option" data-option="channels">Channels</button>
+		<button class="search-option" data-option="companies">Companies</button>
+	</div>
 
-        <div class="flipper-flesh" id="recentConversationsList">
+	<div class="recent-conversations">
 
-            <div class="conversation-item">
-                <div class="avatar-container">
-                    <img class="contact-avatar" src="avatar_url_or_initials.png"
-                        alt="Contact Name"> <i class="status-icon fas fa-moon away"></i>
-                </div>
-                <div class="text-container">
-                    <span class="contact-name">Contact Name</span> <span
-                        class="last-message">Last message content</span>
-                        <span class="missed-count" id=></span>
-                </div>
-            </div>
+		<div class="dropdown-header" id="recentConversationsHeader">
+			<i class="fas fa-chevron-right" id="recentConversationsHeader"></i> <span
+				id="toggleRecentBtn" class="toggle-button">RECENT
+				CONVERSATIONS</span>
+		</div>
 
-        </div>
-    </div>
+		<div class="flipper-flesh" id="recentConversationsList">
+
+			<div class="conversation-item">
+				<div class="avatar-container">
+					<img class="contact-avatar" src="avatar_url_or_initials.png"
+						alt="Contact Name"> <i class="status-icon fas fa-moon away"></i>
+				</div>
+				<div class="text-container">
+					<span class="contact-name">Contact Name</span> <span
+						class="last-message">Last message content</span> <span
+						class="missed-count" id=></span>
+				</div>
+			</div>
+
+		</div>
+
+		
+
+	</div>
+
+	<div class="recent-conversations" id="contactfromserver" style="display: none">
+		<div class="dropdown-header" id="contactsInOtherCompaniesHeader">
+			<i class="fas fa-chevron-down" id="expandCollapseButton"></i>
+			<!-- Change icon to fa-chevron-down for collapse -->
+			<span id="toggleRecentBtn" class="toggle-button">CONTACTS</span>
+		</div>
+
+		<div class="flipper-flesh" id="contactsInOtherCompaniesList" style="display: none">
+			<!-- Contacts will be dynamically added here -->
+		</div>
+	</div>
+
+
 
 </div>
+
 
 </jalios:appSidebar>
 

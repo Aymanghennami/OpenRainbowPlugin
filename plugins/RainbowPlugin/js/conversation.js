@@ -44,7 +44,7 @@ export function getRecentConversations() {
 
 }
 
-function displayOneToOneConversation(conversationData,flipperFlesh) {
+ export function displayOneToOneConversation(conversationData,flipperFlesh) {
      // Get contact ID from the conversation
     //const conversation = rainbowSDK.conversations.getConversationById(conversationId);
     var conversation=null;
@@ -380,7 +380,7 @@ let onNewPresenceChnageReceived=function(event){
 document.addEventListener(rainbowSDK.presence.RAINBOW_ONCONTACTRICHPRESENCECHANGED, onNewPresenceChnageReceived)
 
 
-function displayBubbleConversation(conversation,flipperFlesh) {
+export function displayBubbleConversation(conversation,flipperFlesh) {
 
     // Get contact ID from the conversation
     //const conversation = rainbowSDK.conversations.getConversationById(conversationId);
