@@ -42,31 +42,72 @@
         </div>
     </div>
 
-    <!--  Message Input Field and Send Button -->
+   <!--  Message Input Field and Send Button -->
     <div class="input-container">
 
-        <button class="icon-button">
-            <span class="material-icons">gif_box</span>
-        </button>
-        <button class="icon-button">
-            <i class="fas fa-smile"></i>
-        </button>
-        <button class="icon-button">
-            <i class="fas fa-exclamation-circle"></i>
-        </button>
-        <input type="text" id="messageInput" class="message-input"
-            placeholder="Enter your text here...">
-        <button id="sendMessageBtn" class="send-button">
-            <i class="fas fa-paper-plane"></i>
-        </button>
-        <button class="icon-button">
-            <i class="fas fa-microphone"></i>
-        </button>
-        <button class="icon-button">
-            <i class="fas fa-plus"></i>
-        </button>
+        <div class="fileInfo">
+            <div class="fileInfo">
+                <div class="selected-file-info"></div>
+                <input type="file" id="fileInput" style="display: none;" />
+            </div>
+        </div>
+
+        <div class="attachementbuttons">
+        
+            <button class="icon-button">
+                <span class="material-icons">gif_box</span>
+            </button>
+            <button class="icon-button">
+                <i class="fas fa-smile"></i>
+            </button>
+            <button class="icon-button">
+                <i class="fas fa-exclamation-circle"></i>
+            </button>
+            <input type="text" id="messageInput" class="message-input"
+                placeholder="Enter your text here...">
+            <button id="sendMessageBtn" class="send-button">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+            <button class="icon-button">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="icon-button" id="attachFileButton">
+                <i class="fas fa-plus"></i>
+            </button>
+
+            <div id="attachedFileInfo" class="attach-file-menu"
+                style="display: none;">
+                <div class="menu-title">Attach</div>
+
+                <div class="attach-options">
+                    <div class="attach-option" data-type="computer">
+                        <label for="fileInput"> <i class="fa fa-desktop"
+                            aria-hidden="true"></i> Attach from computer
+                        </label>
+                    </div>
+
+                    <div class="attach-option" data-type="rainbow">
+                        <span>Attach from Rainbow</span>
+                    </div>
+
+                    <div class="attach-option" data-type="youtube">
+                        <span>Attach YouTube video</span>
+                    </div>
+
+                    <div class="attach-option" data-type="camera">
+                        <span>Take a photo</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
 
     </div>
+      
+
 
 </div>
-    
+ <!-- Details Section (Hidden for Now) -->
+            
+ 

@@ -1,4 +1,52 @@
             <!-- Details Section (Hidden for Now) -->
+            
             <div class="details">
+            <div class="user-details" id="detailContact" style="display: none;">
+    <div class="top-icons" style="display=none">
+        <div class="user-section active" id="profileSection">
+            <i class="fas fa-user-circle profile-icon"></i>
+            <span class="section-title">Profile</span>
+        </div>
+        <div class="user-section" id="callsSection">
+            <i class="fas fa-phone call-icon"></i>
+            <span class="section-title">Calls</span>
+            <div class="section-content" id="callsContent"></div>
+        </div>
+        <div class="user-section" id="filesSection">
+            <i class="fas fa-file file-icon"></i>
+            <span class="section-title">Files</span>
+            <div class="section-content" id="filesContent"></div>
+        </div>
+    </div>
+
+    <div class="contact-details">
+        <img src="path-to-avatar-image.jpg" alt="Contact Avatar" class="contact-detail-avatar" id="contactAvatar">
+        <div class="contact-buttons">
+            <button class="favorite-button">Favorite</button>
+            <button class="invite-button">Invite</button>
+        </div>
+
+        <div class="name-company-container">
+            <h2 class="contact-name" id="contactName"></h2>
+            <div class="contact-company" id="contactCompany"></div>
+        </div>
+
+        <div class="contact-information">
+            <h3>Contact Information</h3>
+            <div class="contact-info-item">
+                <i class="fas fa-envelope"></i>
+                <span class="info-label"> Work Email:</span>
+                <span class="info-value" id="contactEmail"></span>
+            </div>
+            <div class="contact-info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="info-label"> Country:</span>
+                <span class="info-value" id="contactCountry"></span>
+            </div>
+            <button class="remove-from-network-button">Remove from Network</button>
+        </div>
+    </div>
+</div>
                 <!-- Content for the details section -->
             </div>
+           

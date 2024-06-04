@@ -73,6 +73,7 @@ if (token == null || token.equals("")) {
 
 <!--  Include the openrainbowSDK.js as a module type -->
 <script type="module" src="plugins/RainbowPlugin/js/RainbowSDK.js"></script>
+<script type="module" src="../../js/filterSearch.js"></script>
 
 
 
@@ -84,7 +85,8 @@ if (token == null || token.equals("")) {
 
     <%-- MAIN --%>
     <jalios:appMain headerTitle="<%= loginHandler.getAppTitle() %>">
-    <%@ include file='/plugins/RainbowPlugin/jsp/app/doRainbowBody.jspf' %>
+     <%@ include file='/plugins/RainbowPlugin/jsp/app/doRainbowBody.jspf' %>
+ 	<%@ include file='/plugins/RainbowPlugin/jsp/app/Details.jspf' %>
     </jalios:appMain>
 
   </jalios:app>

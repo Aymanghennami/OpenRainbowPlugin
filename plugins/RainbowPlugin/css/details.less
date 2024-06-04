@@ -84,11 +84,16 @@
     cursor: pointer;
 }
 .contact-display-name {
-    font-size: 14px;
-    color: #555;
-
+    font-size: 16px;
+    color: black;
     font-weight: bold;
-    margin-left: 11px;
+}
+.contactdisplayname {
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 3px;
+    margin-top: 3px;
 }
 .contact-information {
     margin-top: 20px;
@@ -104,7 +109,7 @@
 }
 
 .info-label {
-        margin-left: 5px;
+    margin-left: 5px;
     font-weight: bold;
 }
 
@@ -129,30 +134,50 @@
 .name-company-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin-bottom: 20px;
+}
+
+.namecompany-container{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 10px;
+        margin-top: 8px;
 }
 
 .room-avatar {
     width: 300px;
-            height: 220px;
+    height: 220px;
     border-radius: 6px;
     margin-bottom: 10px;
 }
 
 .section-title {
-    text-align: left;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    align-items: self-start;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 14px;
+    margin-bottom: 3px;
+    margin-top: 3px;
 }
 
 .contact-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3px;
+  padding: 5px 10px; /* Add slight padding to accommodate shadow */
+  border: 1px solid transparent; /* Set a transparent border initially */
+  width: 265px;
+  height: 40px;
+
+  
 }
+
+.contact-item:hover {
+  background-color: #f2f2f2;
+  cursor: pointer;
+  box-shadow: 0 0 3px rgba(224, 224, 224, 0.2);
+ }
 
 .avatar-container {
     position: relative;
@@ -170,8 +195,14 @@
 }
 
 .contact-company {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
+}
+
+.contactcompany {
+    font-size: 15px;
+    color: #666;
+    margin-top: 3px;
 }
 
 .organizer-icon {

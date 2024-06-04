@@ -1,6 +1,6 @@
 import rainbowSDK from '../rainbow-web-sdk/src/rainbow-sdk.min.js';
-
 import { getRecentConversations } from './conversation.js';
+import { displayProfileAvatar} from'./profile.js';
 
 let onReady = function onReady() {
     console.log('[Hello World] :: On SDK Ready!');
@@ -26,7 +26,7 @@ function fetchLoginInfo() {
                         console.log('[Hello World] :: Signed in Successfully');
                         console.log('Account:', account);
                         getRecentConversations(); // Fetch conversations after successful sign-in
-
+                        displayProfileAvatar();
                     })
                     .catch(function(err) {
                         console.log('[Hello World] :: Something went wrong with the signing...', err);
@@ -42,7 +42,7 @@ function fetchLoginInfo() {
 
 
 
-// Add event listener to the search input
+
 
 
 

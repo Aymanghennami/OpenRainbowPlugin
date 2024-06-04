@@ -1,5 +1,7 @@
 import rainbowSDK from '../rainbow-web-sdk/src/rainbow-sdk.min.js';
 
+let currentConversation=null;
+let currentConversationType=null;
 
 export function getRecentConversations() {
 
@@ -20,14 +22,14 @@ export function getRecentConversations() {
                 if (conversation.missedCounter > 0) {
                     totalMissedMessages += conversation.missedCounter;
                 }
-
+                
                 if (conversation.type === 0) {
-                    displayOneToOneConversation(conversation, flipperFlesh);
+                    displayOneToOneConversation(conversation,flipperFlesh);
 
                 }
 
                 if (conversation.type === 1) {
-                    displayBubbleConversation(conversation, flipperFlesh);
+                    displayBubbleConversation(conversation,flipperFlesh);
                 }
             });
 
@@ -42,17 +44,17 @@ export function getRecentConversations() {
 
 }
 
-function displayOneToOneConversation(conversationData, flipperFlesh) {
-    // Get contact ID from the conversation
+function displayOneToOneConversation(conversationData,flipperFlesh) {
+     // Get contact ID from the conversation
     //const conversation = rainbowSDK.conversations.getConversationById(conversationId);
-    var conversation = null;
-
+    var conversation=null;
+    
     if (!conversationData) {
         console.error('Conversation data not found');
         return;
     }
-
-    conversation = conversationData;
+    
+    conversation=conversationData;
     console.log("Fetching contact for conversation:", conversation);
 
     var selectedContact = conversation.contact;
@@ -87,7 +89,7 @@ function displayOneToOneConversation(conversationData, flipperFlesh) {
 
     // Clear any existing status classes
     console.log("Contact status before setting icon:", selectedContact.status);
-
+    
 
     // Check the contact status and add the appropriate icon
     switch (conversation.contact.status) {
@@ -132,22 +134,22 @@ function displayOneToOneConversation(conversationData, flipperFlesh) {
 
     // Retrieve the last message text
     var lastMessage = conversation.lastMessageText;
-    console.log("last message before checking anything", lastMessage);
-
+    console.log("last message before checking anything",lastMessage);
+    
     isSentByMe(conversation.dbId)
         .then(isSentByMe => {
             // Check for empty messages first (highest priority)
-            if (conversation.messages.length === 0) {
+            if (conversation.messages.length===0){
                 // Empty messages - display company name if available
                 const companyName = conversation.contact.company && conversation.contact.company.name;
                 if (companyName) {
                     const truncatedCompanyName = companyName.length > 25 ? `${companyName.substring(0, 25)}...` : companyName;
                     lastMessageSpan.textContent = truncatedCompanyName;
-                } else {
+                }else {
                     lastMessageSpan.textContent = "No messages";
                 }
                 return; // Exit the function early since message is displayed
-
+                
             } else {
                 // Log the last message for debugging
                 console.log("Last message After checking:", lastMessage);
@@ -160,7 +162,7 @@ function displayOneToOneConversation(conversationData, flipperFlesh) {
                     const truncatedMessage = lastMessage.length > 25 ? `${lastMessage.substring(0, 25)}...` : lastMessage;
                     lastMessageSpan.textContent = prefix + truncatedMessage;
                 }
-
+             
             }
 
         })
@@ -170,7 +172,7 @@ function displayOneToOneConversation(conversationData, flipperFlesh) {
             lastMessageSpan.textContent = "Error retrieving message";
         });
 
-
+  
     // Create the missed messages count element
     var missedCountSpan = document.createElement('span');
     missedCountSpan.classList.add('missed-count');
@@ -190,35 +192,35 @@ function displayOneToOneConversation(conversationData, flipperFlesh) {
     conversationItem.appendChild(missedCountSpan);
 
 
-    // Create and append close icon element
-    const closeIcon = document.createElement('i');
-    closeIcon.classList.add('fas', 'fa-times', 'close-icon');
+// Create and append close icon element
+  const closeIcon = document.createElement('i');
+  closeIcon.classList.add('fas', 'fa-times', 'close-icon');
 
-    conversationItem.appendChild(closeIcon);
+  conversationItem.appendChild(closeIcon);
 
-    // Add hover effect to conversation item
-    conversationItem.addEventListener('mouseover', function() {
-        closeIcon.style.display = 'inline-block'; // Show icon on hover
-    });
+  // Add hover effect to conversation item
+  conversationItem.addEventListener('mouseover', function() {
+    closeIcon.style.display = 'inline-block'; // Show icon on hover
+  });
 
-    conversationItem.addEventListener('mouseout', function() {
-        closeIcon.style.display = 'none'; // Hide icon on mouseout
-    });
+  conversationItem.addEventListener('mouseout', function() {
+    closeIcon.style.display = 'none'; // Hide icon on mouseout
+  });
 
-    // Add click event listener to close icon
-    closeIcon.addEventListener('click', function() {
-        rainbowSDK.conversations.closeConversation(conversation.dbId)
-            .then(() => {
-                console.log('Conversation closed successfully:', conversation.dbId);
-                // Remove conversation item from the DOM
-                conversationItem.remove();
-            })
-            .catch(error => {
-                console.error('Error closing conversation:', error);
-            });
-    });
+  // Add click event listener to close icon
+  closeIcon.addEventListener('click', function() {
+    rainbowSDK.conversations.closeConversation(conversation.dbId)
+      .then(() => {
+        console.log('Conversation closed successfully:', conversation.dbId);
+        // Remove conversation item from the DOM
+        conversationItem.remove();
+      })
+      .catch(error => {
+        console.error('Error closing conversation:', error);
+      });
+  });
 
-
+    
     // Make the conversation item clickable
     conversationItem.addEventListener('click', function() {
         var contactId = selectedContact.dbId;
@@ -266,37 +268,37 @@ function isSentByMe(conversationId) {
 
 
 function lastMessageSenderInBubble(conversationId) {
-    const myUserId = rainbowSDK.contacts.getConnectedUser().dbId;
+  const myUserId = rainbowSDK.contacts.getConnectedUser().dbId;
 
-    return new Promise((resolve, reject) => {
-        rainbowSDK.im.getMessagesFromConversation(conversationId, 30)
-            .then(conversation => {
-                const messages = conversation.messages;
-                const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+  return new Promise((resolve, reject) => {
+    rainbowSDK.im.getMessagesFromConversation(conversationId, 30)
+      .then(conversation => {
+        const messages = conversation.messages;
+        const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
 
-                if (lastMessage) {
-                    const senderName = lastMessage.from.dbId === myUserId ? "Me" : lastMessage.from.firstname;
-                    resolve(senderName);
-                } else {
-                    resolve(null); // Indicate no last message
-                }
-            })
-            .catch(error => {
-                console.error('Error getting conversation history:', error);
-                reject(error);
-            });
-    });
+        if (lastMessage) {
+          const senderName = lastMessage.from.dbId === myUserId ? "Me" : lastMessage.from.firstname;
+          resolve(senderName);
+        } else {
+          resolve(null); // Indicate no last message
+        }
+      })
+      .catch(error => {
+        console.error('Error getting conversation history:', error);
+        reject(error);
+      });
+  });
 }
 
 function updatePresenceStatus(conversationId, status) {
 
     const conversationItem = document.getElementById(conversationId);
     console.log("trying to update contact status")
-
+    
     if (conversationItem) {
-
-        const statusIcon = conversationItem.querySelector('.avatar-container .status-icon');
-
+        
+    const statusIcon = conversationItem.querySelector('.avatar-container .status-icon');
+    
         if (statusIcon) {
             // Check the contact status and add the appropriate icon
             switch (status) {
@@ -322,63 +324,63 @@ function updatePresenceStatus(conversationId, status) {
             }
 
         }
-
-    }
+ 
+  }
 };
 
-let onNewPresenceChnageReceived = function(event) {
-    console.log("seems the status presence has changed", event.detail);
-    var contactId = event.detail.id;
-    var status = event.detail.status;
-    rainbowSDK.conversations.getConversationByContactId(contactId)
-        .then(function(conversation) {
-            updatePresenceStatus(conversation.dbId, status);
-            var lastmessage = conversation.lastMessageText;
+let onNewPresenceChnageReceived=function(event){
+    console.log("seems the status presence has changed",event.detail);
+    var contactId=event.detail.id;
+    var status=event.detail.status;
+     rainbowSDK.conversations.getConversationByContactId(contactId)
+            .then(function(conversation) {
+                updatePresenceStatus(conversation.dbId,status);
+                var lastmessage = conversation.lastMessageText;
 
-            isSentByMe(conversation.dbId)
-                .then(isSentByMe => {
-                    // Check for empty messages first (highest priority)
-                    if (conversation.messages.length === 0) {
-                        // Empty messages - display company name if available
-                        const companyName = conversation.contact.company && conversation.contact.company.name;
-                        if (companyName) {
-                            const truncatedCompanyName = companyName.length > 25 ? `${companyName.substring(0, 25)}...` : companyName;
-
-                            updateLastMessage(conversation.dbId, truncatedCompanyName);
-
+                isSentByMe(conversation.dbId)
+                    .then(isSentByMe => {
+                        // Check for empty messages first (highest priority)
+                        if (conversation.messages.length===0) {
+                            // Empty messages - display company name if available
+                            const companyName = conversation.contact.company && conversation.contact.company.name;
+                            if (companyName) {
+                                const truncatedCompanyName = companyName.length > 25 ? `${companyName.substring(0, 25)}...` : companyName;
+                               
+                                updateLastMessage(conversation.dbId,truncatedCompanyName);
+                                
+                            }
+                            
                         }
+                       
+                        // Check for deleted message (if messages are not empty)
+                        if (lastmessage === "" || lastmessage === null) {
+                            updateLastMessage(conversation.dbId,"Message deleted");
+                        } else {
+                            // Regular messages - handle sender and truncation
+                            const prefix = isSentByMe ? "Me: " : "";
+                            const truncatedMessage = lastmessage.length > 25 ? `${lastmessage.substring(0, 25)}...` : lastmessage;
+                            updateLastMessage(conversation.dbId,prefix + truncatedMessage);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error checking last message sender:", error);
+                        // Set a fallback message or handle the error appropriately
+                        
+                        updateLastMessage(conversation.dbId,"Error retrieving message");
+                    });
+                      
+            })
+            .catch(function(err) {
+                console.log('Error getting the associated conversation:', err);
 
-                    }
-
-                    // Check for deleted message (if messages are not empty)
-                    if (lastmessage === "" || lastmessage === null) {
-                        updateLastMessage(conversation.dbId, "Message deleted");
-                    } else {
-                        // Regular messages - handle sender and truncation
-                        const prefix = isSentByMe ? "Me: " : "";
-                        const truncatedMessage = lastmessage.length > 25 ? `${lastmessage.substring(0, 25)}...` : lastmessage;
-                        updateLastMessage(conversation.dbId, prefix + truncatedMessage);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error checking last message sender:", error);
-                    // Set a fallback message or handle the error appropriately
-
-                    updateLastMessage(conversation.dbId, "Error retrieving message");
-                });
-
-        })
-        .catch(function(err) {
-            console.log('Error getting the associated conversation:', err);
-
-        });
-
+            });
+    
 }
 
 document.addEventListener(rainbowSDK.presence.RAINBOW_ONCONTACTRICHPRESENCECHANGED, onNewPresenceChnageReceived)
 
 
-function displayBubbleConversation(conversation, flipperFlesh) {
+function displayBubbleConversation(conversation,flipperFlesh) {
 
     // Get contact ID from the conversation
     //const conversation = rainbowSDK.conversations.getConversationById(conversationId);
@@ -387,7 +389,7 @@ function displayBubbleConversation(conversation, flipperFlesh) {
         console.error('Conversation data not found');
         return;
     }
-
+    
     console.log("Fetching contact for conversation:", conversation);
 
 
@@ -429,21 +431,21 @@ function displayBubbleConversation(conversation, flipperFlesh) {
 
     // Retrieve the last message text
     var lastMessage = conversation.lastMessageText;
-
-    lastMessageSenderInBubble(conversation.dbId)
+    
+        lastMessageSenderInBubble(conversation.dbId)
         .then(lastSender => {
             // Check for empty messages first (highest priority)
-            if (!conversation.messages.length) {
-
+            if (!conversation.messages.length){
+                
                 lastMessageSpan.textContent = "";
                 return; // Exit the function early since message is displayed
             }
             // Check for deleted message (if messages are not empty)
-            if (lastMessage === "") {
+            if (lastMessage === ""){
                 lastMessageSpan.textContent = "Message deleted";
             } else {
-                var truncatedMessage = lastMessage.length > 25 ? lastMessage.substring(0, 25) + '...' : lastMessage;
-                lastMessageSpan.textContent = lastSender + ": " + truncatedMessage;
+                 var truncatedMessage = lastMessage.length > 25 ? lastMessage.substring(0, 25) + '...' : lastMessage;
+                 lastMessageSpan.textContent = lastSender + ": " +truncatedMessage;
             }
         })
         .catch(error => {
@@ -452,7 +454,7 @@ function displayBubbleConversation(conversation, flipperFlesh) {
             lastMessageSpan.textContent = "Error retrieving message";
         });
 
-
+   
     // Append name, last message, and missed count to the text container
     textContainer.appendChild(nameSpan);
     textContainer.appendChild(lastMessageSpan);
@@ -468,23 +470,26 @@ function displayBubbleConversation(conversation, flipperFlesh) {
     // Append avatar and name to the conversation item
     conversationItem.appendChild(avatarContainer);
     conversationItem.appendChild(textContainer);
-    conversationItem.appendChild(missedCountSpan);
 
+    
     // Create and append close icon element
     const closeIcon = document.createElement('i');
     closeIcon.classList.add('fas', 'fa-times', 'close-icon');
 
-    conversationItem.appendChild(closeIcon);
-
     // Add hover effect to conversation item
     conversationItem.addEventListener('mouseover', function() {
         closeIcon.style.display = 'inline-block'; // Show icon on hover
-        missedCountSpan.style.display = 'none';
+        missedCountSpan.style.display='none';
     });
+    
+    conversationItem.appendChild(missedCountSpan);
 
     conversationItem.addEventListener('mouseout', function() {
         closeIcon.style.display = 'none'; // Hide icon on mouseout
     });
+    
+    
+    conversationItem.appendChild(closeIcon);
 
     // Add click event listener to close icon
     closeIcon.addEventListener('click', function() {
@@ -545,11 +550,11 @@ function updateLastMessage(conversationId, newMessage) {
 }
 
 let onNewMessageReceived = function(event) {
-    console.log("seems you just recieved a new message", event.detail);
+    console.log("seems you just recieved a new message",event.detail);
     let message = event.detail.message;
     let conversation = event.detail.conversation;
-    let lastMessage = message.data;
-
+    let lastMessage=message.data;
+    
 
     // Get conversation item
     let conversationItem = document.getElementById(conversation.dbId);
@@ -574,8 +579,8 @@ let onNewMessageReceived = function(event) {
             // Update last message
             updateLastMessage(conversation.dbId, truncatedMessage);
             if (!conversationItem.classList.contains('active')) {
-                currentCount++;
-            }
+            currentCount++;
+        }
         }
 
 
@@ -698,6 +703,8 @@ function handleBubbleClick(conversationId) {
 
     // Get conversation data
     var conversationData = rainbowSDK.conversations.getConversationById(conversationId);
+    currentConversation=conversationData;
+currentConversationType='bubble';
     if (!conversationData) {
         console.error('Conversation data not found');
         return;
@@ -747,24 +754,7 @@ function handleBubbleClick(conversationId) {
 
     // Add event listener to send button
 
-    var sendMessageBtn = document.getElementById('sendMessageBtn');
-    if (!sendMessageBtn) {
-        console.error('Send message button not found');
-        return;
-    }
-
-    sendMessageBtn.addEventListener('click', function() {
-        const messageInput = document.getElementById('messageInput');
-        if (!messageInput) {
-            console.error('Message input field not found');
-            return;
-        }
-        var message = messageInput.value.trim();
-        if (message !== '') {
-            chatWithBubble(conversationData.room.dbId, message);
-            messageInput.value = '';
-        }
-    });
+    
 }
 
 function chatWithBubble(bubbleId, message) {
@@ -794,111 +784,103 @@ function chatWithBubble(bubbleId, message) {
 }
 
 function displayClickedBubble(bubbleId) {
-    rainbowSDK.conversations.getConversationByBubbleId(bubbleId)
-        .then(conversation => {
-            if (conversation) {
-                const bubbleInfoDiv = document.getElementById('contactInfo');
-                bubbleInfoDiv.style.display = 'flex';
-                bubbleInfoDiv.innerHTML = ''; // Clear previous content
+  rainbowSDK.conversations.getConversationByBubbleId(bubbleId)
+    .then(conversation => {
+      if (conversation) {
+        const bubbleInfoDiv = document.getElementById('contactInfo');
+        bubbleInfoDiv.style.display = 'flex';
+        bubbleInfoDiv.innerHTML = ''; // Clear previous content
 
-                // Create and update avatar container and image
-                const avatarContainer = document.createElement('div');
-                avatarContainer.classList.add('bubble-avatar-container');
+        // Create and update avatar container and image
+        const avatarContainer = document.createElement('div');
+        avatarContainer.classList.add('bubble-avatar-container');
 
-                const avatarImg = document.createElement('img');
-                avatarImg.classList.add('bubble-members-avatar');
-                // Assuming you have a way to get the avatar source for the bubble
-                if (conversation.room.avatar) {
-                    avatarImg.src = conversation.room.avatar;
-                } else {
+        const avatarImg = document.createElement('img');
+        avatarImg.classList.add('bubble-members-avatar');
+        // Assuming you have a way to get the avatar source for the bubble
+        if (conversation.room.avatar) {
+          avatarImg.src = conversation.room.avatar;
+        } else {
+          
+          const initials = `${conversation.room.name.charAt(0)}${conversation.room.name.charAt(1)}`;
+          avatarImg.src = `https://ui-avatars.com/api/?name=${initials}`;
+        }
+        avatarContainer.appendChild(avatarImg);
 
-                    const initials = `${conversation.room.name.charAt(0)}${conversation.room.name.charAt(1)}`;
-                    avatarImg.src = `https://ui-avatars.com/api/?name=${initials}`;
-                }
-                avatarContainer.appendChild(avatarImg);
+        // Create container for details (name and icon-description)
+        const bubbleDetails = document.createElement('div');
+        bubbleDetails.classList.add('bubble-details'); // Add the class for styling
 
-                // Create container for details (name and icon-description)
-                const bubbleDetails = document.createElement('div');
-                bubbleDetails.classList.add('bubble-details'); // Add the class for styling
+        // Create and update bubble name element
+        const bubbleName = document.createElement('div');
+        bubbleName.classList.add('bubble-name');
+        bubbleName.textContent = conversation.room.name;
 
-                // Create and update bubble name element
-                const bubbleName = document.createElement('div');
-                bubbleName.classList.add('bubble-name');
-                bubbleName.textContent = conversation.room.name;
+        // Create container for icon and description
+        const iconAndDescriptionContainer = document.createElement('div');
+        iconAndDescriptionContainer.classList.add('bubble-icon-and-description'); // Add a class for styling
 
-                // Create container for icon and description
-                const iconAndDescriptionContainer = document.createElement('div');
-                iconAndDescriptionContainer.classList.add('bubble-icon-and-description'); // Add a class for styling
-
-                // Create favorite icon using Font Awesome (gray color)
-                const favoriteIcon = document.createElement('i');
-                favoriteIcon.classList.add('fas', 'fa-regular', 'fa-star', 'bubble-icon-gray'); // Font Awesome icon with custom class
-                iconAndDescriptionContainer.appendChild(favoriteIcon);
-
-
-                // Create and update bubble description element with separator (conditionally)
-                const bubbleDescription = document.createElement('div');
-                bubbleDescription.classList.add('bubble-description');
-                if (conversation.room.desc) {
-                    bubbleDescription.textContent = " " + `  |  ${conversation.room.desc}`;
-                } else {
-                    bubbleDescription.textContent = ''; // Empty string if no description
-                }
-                iconAndDescriptionContainer.appendChild(bubbleDescription);
-
-                // Append name and icon-description container to details container
-                bubbleDetails.appendChild(bubbleName);
-                bubbleDetails.appendChild(iconAndDescriptionContainer);
+          // Create favorite icon using Font Awesome (gray color)
+          const favoriteIcon = document.createElement('i');
+          favoriteIcon.classList.add('fas', 'fa-regular', 'fa-star', 'bubble-icon-gray'); // Font Awesome icon with custom class
+          iconAndDescriptionContainer.appendChild(favoriteIcon);
 
 
-                // Create actions container and icons (unchanged)
-                const actions = document.createElement('div');
-                actions.classList.add('actions');
-                const ellipsisIcon = document.createElement('i');
-                ellipsisIcon.classList.add('fas', 'fa-ellipsis-v');
-                const chevronIcon = document.createElement('i');
-                chevronIcon.classList.add('fas', 'fa-chevron-right');
-                actions.appendChild(ellipsisIcon);
-                actions.appendChild(chevronIcon);
+        // Create and update bubble description element with separator (conditionally)
+        const bubbleDescription = document.createElement('div');
+        bubbleDescription.classList.add('bubble-description');
+        if (conversation.room.desc) {
+          bubbleDescription.textContent = " " +`  |  ${conversation.room.desc}`;
+        } else {
+          bubbleDescription.textContent = ''; // Empty string if no description
+        }
+        iconAndDescriptionContainer.appendChild(bubbleDescription);
+
+        // Append name and icon-description container to details container
+        bubbleDetails.appendChild(bubbleName);
+        bubbleDetails.appendChild(iconAndDescriptionContainer);
 
 
-                // Append elements to bubbleInfoDiv
-                bubbleInfoDiv.appendChild(avatarContainer);
-                bubbleInfoDiv.appendChild(bubbleDetails); // Add the details container
-                bubbleInfoDiv.appendChild(actions); // Assuming 'actions' is defined elsewhere
+        // Create actions container and icons (unchanged)
+        const actions = document.createElement('div');
+        actions.classList.add('actions');
+        const ellipsisIcon = document.createElement('i');
+        ellipsisIcon.classList.add('fas', 'fa-ellipsis-v');
+        const chevronIcon = document.createElement('i');
+        chevronIcon.classList.add('fas', 'fa-chevron-right');
+        actions.appendChild(ellipsisIcon);
+        actions.appendChild(chevronIcon);
+        
+        
+        // Append elements to bubbleInfoDiv
+        bubbleInfoDiv.appendChild(avatarContainer);
+        bubbleInfoDiv.appendChild(bubbleDetails); // Add the details container
+        bubbleInfoDiv.appendChild(actions); // Assuming 'actions' is defined elsewhere
 
-            } else {
-                console.log('Bubble not found');
-            }
-        })
-        .catch(error => {
-            console.error('Error getting conversation by bubble ID:', error);
-        });
+      } else {
+        console.log('Bubble not found');
+      }
+    })
+    .catch(error => {
+      console.error('Error getting conversation by bubble ID:', error);
+    });
 }
+
 
 // Function to handle conversation click
 export function handleConversationClick(conversation) {
-
+    
     const contact = conversation.contact;
+    currentConversation=conversation;
 
-    console.log("clicked conversation with ", conversation.contact.firstname);
+currentConversationType='one-to-one'
 
-    console.log("here is the contact we're hoping to message", contact.firstname)
+    console.log("clicked conversation with ",conversation.contact.firstname);
+        
+    console.log("here is the contact we're hoping to message",contact.firstname)
 
 
-    document.getElementById('sendMessageBtn').addEventListener('click', function() {
-        const messageInput = document.getElementById('messageInput');
-        if (!messageInput) {
-            console.error('Message input field not found');
-            return;
-        }
-        var message = messageInput.value.trim();
-        if (message !== '') {
-            console.log("contact to hopefylly text", contact.firstname);
-            chatWithContact(contact, message);
-            messageInput.value = '';
-        }
-    });
+   
 
     // Get the main content element
     var mainContent = document.getElementById('mainContent');
@@ -906,6 +888,42 @@ export function handleConversationClick(conversation) {
         console.error('Element with ID mainContent not found');
         return;
     }
+    
+    const attachFileButton = document.querySelector('#attachFileButton');
+    const attachOptions = document.querySelectorAll('.attach-option');
+
+    attachFileButton.addEventListener('click', function() {
+        // Toggle the visibility of the attachFileMenu
+        const attachFileMenu = document.getElementById('attachedFileInfo');
+        attachFileMenu.style.display = attachFileMenu.style.display === 'none' ? 'block' : 'none';
+    });
+
+
+const fileInput = document.getElementById('fileInput');
+const attachedFileInfo = document.querySelector('.fileInfo .selected-file-info'); 
+const attachFileMenu = document.getElementById('attachedFileInfo');
+
+fileInput.addEventListener('change', function(event) {
+  var selectedFile = event.target.files[0];
+
+  if (selectedFile) {
+    var filename = selectedFile.name;
+    var filesize = selectedFile.size / 1024; // Convert to KB for better display
+
+    attachedFileInfo.textContent = filename + ' (' + filesize.toFixed(2) + ' KB)';
+
+    // Show the .fileInfo element
+    document.querySelector('.fileInfo').classList.add('active'); // Add 'active' class to display
+        attachFileMenu.style.display = 'none';
+  } else {
+    // Handle case where no file is selected (optional)
+    attachedFileInfo.textContent = ''; // Clear previous information
+    document.querySelector('.fileInfo').classList.remove('active'); // Remove 'active' class to hide
+    attachFileMenu.style.display = 'none';
+  }
+});
+
+
 
     var myUserId = rainbowSDK.contacts.getConnectedUser().dbId;
 
@@ -942,6 +960,7 @@ export function handleConversationClick(conversation) {
             if (Array.isArray(messages) && messages.length > 0) {
                 messages.forEach(message => {
                     const isMe = message.from.dbId === myUserId;
+                    console.log("here are the messages",message);
                     displayMessage(conv.dbId, message, isMe);
                 });
 
@@ -973,6 +992,59 @@ export function handleConversationClick(conversation) {
         });
 
 }
+document.getElementById('sendMessageBtn').addEventListener('click', function() {
+
+
+
+
+if(currentConversation){
+
+console.log("we're trying to send a new message to ",currentConversation);
+console.log("we're trying to send a new message to conve with type ",currentConversationType);
+if(currentConversationType=='bubble'){
+
+const messageInput = document.getElementById('messageInput');
+if (!messageInput) {
+console.error('Message input field not found');
+
+}
+
+var message = messageInput.value.trim();
+if (message !== '') {
+chatWithBubble(currentConversation.room.dbId, message);
+messageInput.value = '';
+}
+
+
+sendMessageBtn.addEventListener('click', function() {
+
+
+});
+
+}else if (currentConversationType=='one-to-one'){
+
+const messageInput = document.getElementById('messageInput');
+if (!messageInput) {
+console.error('Message input field not found');
+return;
+}
+var message = messageInput.value.trim();
+if (message !== '') {
+console.log("contact to hopefylly text",currentConversation.contact.firstname);
+chatWithContact(currentConversation.contact, message);
+messageInput.value = '';
+
+}
+} else{
+
+console.log("seems the current conversation is still null");
+}
+
+
+}
+
+
+});
 
 // Function to start a chat with the specified contact
 function chatWithContact(contact, message) {
@@ -1174,12 +1246,119 @@ function displayMessage(conversationId, message, isMe) {
             }
         }
     } else {
+        
+if (message.type.value === "Chat") {
+    messageElement.textContent = message.data;
+} else {
+    const fileDescriptor = rainbowSDK.fileStorage.getFileDescriptorFromId(message.fileId);
+    console.log("here is the file des", fileDescriptor);
+    const fileName = message.fileName;
+    const fileExtension = fileDescriptor.extension.toLowerCase();
 
-        messageElement.textContent = message.data;
+    const fileInfoContainer = document.createElement('div');
+    fileInfoContainer.classList.add('file-info');
+
+    let fileIcon;
+    let originalIcon;
+
+    switch (fileExtension) {
+        case 'png':
+        case 'jpg':
+        case 'jpeg':
+        case 'gif':
+            // Create image preview
+            const imagePreview = document.createElement('img');
+            imagePreview.src = fileDescriptor.url;
+            console.log("here is the img url",fileDescriptor.url)
+            fileInfoContainer.appendChild(imagePreview);
+            break;
+        case 'docx':
+        case 'doc':
+            fileIcon = document.createElement('i');
+            fileIcon.classList.add('fas', 'fa-file-word'); // Font Awesome class for Word file
+            originalIcon = fileIcon.cloneNode(true); // Clone the original icon
+            fileInfoContainer.appendChild(fileIcon);
+            break;
+        case 'xlsx':
+        case 'xls':
+            fileIcon = document.createElement('i');
+            fileIcon.classList.add('fas', 'fa-file-excel'); // Font Awesome class for Excel file
+            originalIcon = fileIcon.cloneNode(true); // Clone the original icon
+            fileInfoContainer.appendChild(fileIcon);
+            break;
+        case 'pdf':
+            fileIcon = document.createElement('i');
+            fileIcon.classList.add('fas', 'fa-file-pdf'); // Font Awesome class for PDF file
+            originalIcon = fileIcon.cloneNode(true); // Clone the original icon
+            fileInfoContainer.appendChild(fileIcon);
+            break;
+        case 'mp4':
+            // Create audio element for MP4 files
+            const audioPlayer = document.createElement('audio');
+            audioPlayer.src = fileDescriptor.url;
+            audioPlayer.controls = true; // Show controls for the audio player
+            fileInfoContainer.appendChild(audioPlayer);
+            break;
+        default:
+            console.warn(`Unsupported file type: ${fileExtension}`);
+    }
+
+    if (!['png', 'jpg', 'jpeg', 'gif'].includes(fileExtension)) {
+        // Create a div for file name
+        const fileNameDiv = document.createElement('div');
+        fileNameDiv.classList.add('file-name'); // Add class for styling
+        fileNameDiv.textContent = fileName; // Set file name as text content
+
+        fileInfoContainer.appendChild(fileNameDiv); // Append the file name div
     }
 
 
-    // Create message metadata element (date)
+    // Optional hover effect to replace icon with download icon
+    fileInfoContainer.addEventListener('mouseover', () => {
+        if (fileIcon) {
+            const downloadIcon = document.createElement('i');
+            downloadIcon.classList.add('fas', 'fa-download');
+            downloadIcon.style.cursor = 'pointer'; 
+            fileIcon.replaceWith(downloadIcon); // Replace original icon with download icon
+            fileIcon = downloadIcon; // Update the fileIcon reference
+            
+             // Attach click event listener to download icon
+            downloadIcon.addEventListener('click', () => {
+                console.log('Download icon clicked');
+                // Initiate file download
+                rainbowSDK.fileStorage.downloadFile(fileDescriptor)
+                    .then(() => {
+                        console.log('File downloaded successfully.');
+                    })
+                    .catch((error) => {
+                        console.error('Error downloading file:', error);
+                    });
+            });
+            
+            
+        }
+    });
+    
+    
+
+    fileInfoContainer.addEventListener('mouseout', () => {
+        if (originalIcon && fileIcon) {
+            fileIcon.replaceWith(originalIcon); // Replace download icon with original icon
+            fileIcon = originalIcon; // Update the fileIcon reference
+        }
+    });
+    
+    
+
+    // Append the file info container to the message element
+    messageElement.appendChild(fileInfoContainer);
+}
+
+
+
+}
+
+    
     const metadataElement = document.createElement('div');
     metadataElement.classList.add('message-metadata');
 
@@ -1658,7 +1837,7 @@ function displayRoomProfile(conversationData) {
         conversationData.room.members.forEach(ber => {
             const member = ber.contact;
             const memberDiv = document.createElement('div');
-            memberDiv.innerHTML = '';
+            memberDiv.innerHTML='';
             memberDiv.classList.add('contact-item');
 
             // Create the avatar container
@@ -1695,26 +1874,26 @@ function displayRoomProfile(conversationData) {
 
                 // Check the contact status and add the appropriate icon
                 switch (member.status) {
-                    case 'online':
-                        statusIcon.classList.add('fas', 'fa-check-circle', 'online');
-                        statusIcon.style.color = 'green'; // Add green color for online
-                        break;
-                    case 'away':
-                        statusIcon.classList.add('fas', 'fa-moon', 'away');
-                        statusIcon.style.color = 'rgb(255, 204, 0)'; // Orange color
-                        statusIcon.style.transform = 'rotate(15deg) scaleX(-1)';
-                        break;
-                    case 'dnd':
-                        statusIcon.classList.add('fas', 'fa-minus-circle', 'dnd');
-                        statusIcon.style.color = 'red'; // Add red color for do not disturb
-                        break;
-                    case 'unknown':
-                    case 'offline':
-                    default:
-                        statusIcon.classList.add('fas', 'fa-circle', 'offline');
-                        statusIcon.style.color = 'gray'; // Add gray color for offline/unknown
-                        break;
-                }
+                case 'online':
+                    statusIcon.classList.add('fas', 'fa-check-circle', 'online');
+                    statusIcon.style.color = 'green'; // Add green color for online
+                    break;
+                case 'away':
+                    statusIcon.classList.add('fas', 'fa-moon', 'away');
+                    statusIcon.style.color = 'rgb(255, 204, 0)'; // Orange color
+                    statusIcon.style.transform = 'rotate(15deg) scaleX(-1)';
+                    break;
+                case 'dnd':
+                    statusIcon.classList.add('fas', 'fa-minus-circle', 'dnd');
+                    statusIcon.style.color = 'red'; // Add red color for do not disturb
+                    break;
+                case 'unknown':
+                case 'offline':
+                default:
+                    statusIcon.classList.add('fas', 'fa-circle', 'offline');
+                    statusIcon.style.color = 'gray'; // Add gray color for offline/unknown
+                    break;
+            }
 
                 avatarContainer.appendChild(statusIcon);
             }
