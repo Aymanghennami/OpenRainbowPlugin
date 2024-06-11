@@ -1266,6 +1266,7 @@ function displayMessage(conversationId, message, isMe) {
 
 			let fileIcon;
 			let originalIcon;
+			
 
 			switch (fileExtension) {
 				case 'png':
@@ -1273,11 +1274,43 @@ function displayMessage(conversationId, message, isMe) {
 				case 'jpeg':
 				case 'gif':
 					// Create image preview
-					const imagePreview = document.createElement('img');
-					imagePreview.src = fileDescriptor.url;
-					console.log("here is the img url", fileDescriptor.url)
-					fileInfoContainer.appendChild(imagePreview);
-					break;
+					   const imagePreview = document.createElement('img');
+                    imagePreview.style.maxWidth = '150px'; // Set max-width for the image preview
+
+                    // Download the file to get the blob and create the object URL
+                    rainbowSDK.fileStorage.downloadFile(fileDescriptor)
+                        .then((blob) => {
+                            let objectURL = URL.createObjectURL(blob);
+                            imagePreview.src = objectURL;
+                            console.log("Image URL created:", objectURL);
+                        })
+                        .catch((error) => {
+                            console.error('Error downloading image file:', error);
+                        });
+
+                    fileInfoContainer.appendChild(imagePreview);
+
+                    // Add a download icon for the image
+                    const downloadImageIcon = document.createElement('i');
+                    downloadImageIcon.classList.add('fas', 'fa-download');
+                    downloadImageIcon.style.cursor = 'pointer';
+                    downloadImageIcon.style.marginLeft = '10px'; // Optional: add some margin for spacing
+
+                    downloadImageIcon.addEventListener('click', () => {
+                        console.log('Download icon clicked');
+                        rainbowSDK.fileStorage.downloadFile(fileDescriptor)
+                            .then((blob) => {
+                                console.log('File downloaded successfully.');
+                                saveToFile(blob, fileDescriptor.fileName);
+                            })
+                            .catch((error) => {
+                                console.error('Error downloading file:', error);
+                            });
+                    });
+
+                    fileInfoContainer.appendChild(downloadImageIcon);
+
+                    break;
 				case 'docx':
 				case 'doc':
 					fileIcon = document.createElement('i');
