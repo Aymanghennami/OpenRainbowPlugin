@@ -84,6 +84,7 @@
                         <label for="fileInput"> <i class="fa fa-desktop"
                             aria-hidden="true"></i> Attach from computer
                         </label>
+                        <input type="file" id="fileInput" style="display: none;">
                     </div>
 
                     <div class="attach-option" data-type="rainbow">
@@ -100,6 +101,9 @@
 
                 </div>
             </div>
+            <div class="fileInfo">
+    <span class="selected-file-info"></span>
+</div>
 
         </div>
 
