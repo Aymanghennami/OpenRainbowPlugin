@@ -51,7 +51,7 @@ if (token == null || token.equals("")) {
     jcmsContext.addCSSHeader("plugins/RainbowPlugin/css/openrainbow.css");
     jcmsContext.addJavaScript("plugins/RainbowPlugin/js/RainbowSDK.js");
 %>
- <%@ include file='/jcore/doHeader.jspf' %>
+ <%@ include file='/jcore/doHeader.jspf' %> 
 
 <head>
 <link rel="stylesheet" href="plugins/RainbowPlugin/css/openrainbow.css">
@@ -74,6 +74,9 @@ if (token == null || token.equals("")) {
 <!--  Include the openrainbowSDK.js as a module type -->
 <script type="module" src="plugins/RainbowPlugin/js/RainbowSDK.js"></script>
 <script type="module" src="../../js/filterSearch.js"></script>
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
 
 
 

@@ -46,11 +46,14 @@
     <div class="input-container">
 
         <div class="fileInfo">
-            <div class="fileInfo">
-                <div class="selected-file-info"></div>
-                <input type="file" id="fileInput" style="display: none;" />
-            </div>
-        </div>
+		<div class="selected-file-info" id="selectedFileDisplay"><button id="closeAttachFileButton"><i class="fas fa-times"></i></button></div>
+		<button id="closeAttachFileButton"><i class="fas fa-times"></i></button>
+		<input type="file" id="fileInput" style="display: none;" />
+
+    
+	
+	</div>
+
 
         <div class="attachementbuttons">
         
